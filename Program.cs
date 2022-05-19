@@ -13,11 +13,13 @@ using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoLab.InterfacesLibrary.ProjectModel.Enums;
 using Microsoft.Extensions.Caching.Memory;
 using System.Threading;
+using System.Configuration;
+using System.Globalization;
+using ODDating.Configs;
 using static ODDating.Variables;
 using ODDating.MyNpg;
-using ODDating.Configs;
-using System.Configuration;
 using ODDating.LogLevels;
+using ODDating.Modules;
 
 namespace ODDating
 {
@@ -36,9 +38,11 @@ namespace ODDating
             {
                 if (configurateAppOneTime)
                 {
+                    new AccGeter().Test();
                     StartAppConfiguration(instance, project);
+
                 }
-        }
+            }
             catch (Error ex)
             {
                 string error = ex.Message;
@@ -67,7 +71,6 @@ namespace ODDating
                     configurateAppOneTime = false;
                 }
             }
-
         }
     }
 }

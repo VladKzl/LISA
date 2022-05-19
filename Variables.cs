@@ -37,9 +37,9 @@ namespace ODDating
         #endregion
         #region [Вступление в группы]
         //Общие настройки
-        public static bool goupsOn; //Вкл-Выкл
-        public static int goroupsToJoinFrom; // Вступить в группы от
-        public static int goroupsToJoinTo; // Вступить в группы до
+        public static bool groupsOn; //Вкл-Выкл
+        public static int groupsToJoinFrom; // Вступить в группы от
+        public static int groupsToJoinTo; // Вступить в группы до
         #endregion
         #region [Глобальные переменные]
         //Лог
@@ -59,6 +59,7 @@ namespace ODDating
         public static object lockerLogMassage = new object();
         public static object lockerZennoLogMassage = new object();
         public static object lockerNlogMassage = new object();
+        public static object lockerAccGeter = new object();
         // Счетчики
         public static bool configurateAppOneTime = true;
     }

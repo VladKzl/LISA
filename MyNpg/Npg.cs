@@ -10,47 +10,25 @@ namespace ODDating.MyNpg
 {
     public class Npg
     {
-        public Npg(string connectionString,
-                     string selectString,
-                     bool autoFill,
-                     bool creatingCommandBuilder = true)
+        public DataSet DataSet { get; set; } = new DataSet();
+        public DataTable Main { get; set; }
+        public DataTable Groups { get; set; }
+        public NpgsqlConnection Connection { get; set; }
+        public NpgsqlCommand SelectCommand { get; set; }
+        public NpgsqlDataAdapter Adapter { get; set; }
+        public NpgsqlCommandBuilder CommandBuilder { get; set; }
+        public Npg(string connectionString, string selectString, bool autoFill, DataSet outerDataSet = null, bool creatingCommandBuilder = true)
         {
-            Connection = new NpgsqlConnection() {ConnectionString = connectionString };
-            Command = new NpgsqlCommand() { CommandText = selectString, Connection = Connection };
-            Adapter = new NpgsqlDataAdapter(Command)
-            {
-                MissingMappingAction = MissingMappingAction.Passthrough,
-                MissingSchemaAction = MissingSchemaAction.AddWithKey,
-            };
-            Adapter.TableMappings.Add("Table", "main");
-            Adapter.TableMappings.Add("Table1", "groups");
-            if (autoFill)
-            {
-                Adapter.Fill(DataSet);
-            }
+            Connection = new NpgsqlConnection() { ConnectionString = connectionString };
+            SelectCommand = new NpgsqlCommand() { CommandText = selectString, Connection = Connection };
+            ConfigurateDataAdapter(outerDataSet);
+            FillDataSet(autoFill, outerDataSet);
+            ConfigurateDataSet();
             if (creatingCommandBuilder)
             {
                 CommandBuilder = new NpgsqlCommandBuilder(Adapter);
             }
         }
-        public Npg(string connectionString,
-                     string selectString,
-                     DataSet outerDataSet,
-                     bool autoFill,
-                     bool creatingCommandBuilder = true) : this(connectionString, selectString, creatingCommandBuilder)
-        {
-            if (autoFill)
-            {
-                Adapter.Fill(outerDataSet);
-            }
-        }
-        public DataSet DataSet { get; set; } = new DataSet();
-        public DataTable Main { get; set; } 
-        public DataTable Groups { get; set; }
-        public NpgsqlConnection Connection { get; set; }
-        public NpgsqlCommand Command { get; set; }
-        public NpgsqlDataAdapter Adapter { get; set; }
-        public NpgsqlCommandBuilder CommandBuilder { get; set; }
         public void Open()
         {
             Connection.Open();
@@ -61,6 +39,39 @@ namespace ODDating.MyNpg
             {
                 Connection?.Close();
             }
+        }
+        public void Update(DataSet dataSet, bool aceptChanges = true)
+        {
+            Adapter.Update(dataSet);
+            if (aceptChanges) dataSet.AcceptChanges();
+        }
+        private void ConfigurateDataAdapter(DataSet outerDataSet = null)
+        {
+            Adapter = new NpgsqlDataAdapter(SelectCommand);
+            Adapter.MissingMappingAction = MissingMappingAction.Passthrough;
+            Adapter.MissingSchemaAction = MissingSchemaAction.AddWithKey;
+            Adapter.TableMappings.Add("Table", "main");
+            Adapter.TableMappings.Add("Table1", "groups");
+        }
+        private void FillDataSet(bool autoFill, DataSet outerDataSet = null)
+        {
+            if (outerDataSet != null)
+            {
+                Adapter.FillSchema(outerDataSet, SchemaType.Mapped);
+                Adapter.Fill(outerDataSet);
+            }
+            else
+            {
+                Adapter.FillSchema(DataSet, SchemaType.Mapped);
+                Adapter.Fill(DataSet);
+            }
+        }
+        private void ConfigurateDataSet()
+        {
+            // Костыль. Устанавливаем default для столбцов, так как при апдейте они не появляются автоматически.
+            DataSet.Tables["main"].Columns["filling"].DefaultValue = "No";
+            DataSet.Tables["main"].Columns["session_ending"].DefaultValue = TimeSpan.Parse(DateTime.Now.ToString("hh:mm:ss"));
+            DataSet.Tables["main"].Columns["status"].DefaultValue = "Ready";
         }
     }
 }
