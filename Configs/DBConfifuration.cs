@@ -63,8 +63,7 @@ namespace ODDating.Configs
                     }
                     new Info("Добавили новые профили");
                 }
-
-                NpgObjects.Adapter.Update(NpgObjects.DataSet);
+                NpgObjects.Update(NpgObjects.DataSet);
             }
         }
     }

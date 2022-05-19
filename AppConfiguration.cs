@@ -47,9 +47,9 @@ namespace ODDating
             #endregion
             #region [Вступление в группы]
             //Общие настройки
-            Variables.goupsOn = Convert.ToBoolean(proj.Variables["goupsOn"].Value); //Вкл-Выкл 
-            Variables.goroupsToJoinFrom = Convert.ToInt32(proj.Variables["goroupsToJoinFromn"].Value); // Вступить в группы от
-            Variables.goroupsToJoinTo = Convert.ToInt32(proj.Variables["goroupsToJoinTon"].Value); // Вступить в группы до
+            Variables.groupsOn = Convert.ToBoolean(proj.Variables["groupsOn"].Value); //Вкл-Выкл 
+            Variables.groupsToJoinFrom = Convert.ToInt32(proj.Variables["groupsToJoinFrom"].Value); // Вступить в группы от
+            Variables.groupsToJoinTo = Convert.ToInt32(proj.Variables["groupsToJoinTo"].Value); // Вступить в группы до
             #endregion
             #region [Глобальные переменные]
             Variables.localWarnAndInfoLogPath = proj.GlobalVariables["LogLevels","localWarnAndInfoLogPath"].Value;

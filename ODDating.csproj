@@ -162,6 +162,7 @@
     <Compile Include="LogLevels\Info.cs" />
     <Compile Include="LogLevels\Trace.cs" />
     <Compile Include="LogLevels\Warn.cs" />
+    <Compile Include="Modules\AccGeter.cs" />
     <Compile Include="MyNpg\Npg.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -189,6 +190,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="ValidateZennoPosterDllPath" BeforeTargets="BeforeBuild">
     <Error Text="Environment variable ZennoPosterDllPath must be set to ZennoPoster installation folder, try to launch ProjectMaker or ZennoPoster" Condition="'$(ZennoPosterDllPath)' == ''" />
