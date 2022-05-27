@@ -51,15 +51,11 @@ namespace ODDating
         public static string generalFatalAndErrorLogPath;
         #endregion
         // Локеры
-        public static object isConnectionClosed = new object();
-        public static object lockerMyNpgGlobal = new object();
-        public static object lockerOddatingGlobal = new object();
-        public static object lockerOddatingMainGlobal = new object();
         public static object lockerAppConfiguration = new object();
         public static object lockerLogMassage = new object();
         public static object lockerZennoLogMassage = new object();
         public static object lockerNlogMassage = new object();
-        public static object lockerAccGeter = new object();
+        public static object lockerDb = new object();
         // Счетчики
         public static bool configurateAppOneTime = true;
     }
