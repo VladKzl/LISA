@@ -19,14 +19,10 @@ namespace ODDating.ModulesControl
         private Type[] RegisteredModules { get; set; }
         public LISA()
         {
-            lock (lockerDbSerch)
+            lock (lockerDb)
             {
                 Account = GetAccountName();
-
-                AccountRowNumber = new Random().Next(0, readyAccs.Count());
-                AccountRow = readyAccs.ElementAt(AccountRowNumber);
-                Account = AccountRow["profile"].ToString();
-                AccountRow["status"] = "Work";
+                AccountRow = Main.Select().Where(row => (string)row["profile"] == Account).First();
             }
         }
         public void StartModules()
@@ -37,8 +33,6 @@ namespace ODDating.ModulesControl
         {
             Type[] modules = (Type[])Assembly.GetExecutingAssembly().GetTypes().Where(type => type.Namespace == "ODDating.Modules");
             RegisteredModules = modules;
-            /*            Type.InvokeMember
-                        Activator.*/
         }
         private string GetAccountName()
         {
@@ -46,12 +40,13 @@ namespace ODDating.ModulesControl
             do
             {
                 Thread.Sleep(TimeSpan.FromSeconds(1.0));
-                readyAccs = Main.Select().Where(row => (string)row["status"] == "ldal");//Ready
+                readyAccs = Main.Select().Where(row => (string)row["status"] == "Ready");
             }
             while (readyAccs.Count() == 0);
 
             string accountName = null;
-            for(int i = 0; i < int.MaxValue; i++)
+            int i = 0;
+            do
             {
                 IEnumerable<DataRow> readyAccsSortedBySessionsCount = readyAccs.Where(row => Convert.ToInt32(row["sessions_count"]) == i);
                 if (readyAccsSortedBySessionsCount.Count() != 0)
@@ -59,9 +54,9 @@ namespace ODDating.ModulesControl
                     int number = new Random().Next(0, readyAccs.Count());
                     accountName = readyAccsSortedBySessionsCount.ElementAt(number)["profile"].ToString();
                 }
-                while (accountName == null) ;
+                i++;
             }
-            while ();
+            while (accountName == null);
             return accountName;
         }
     }
