@@ -156,6 +156,7 @@
     <Compile Include="Configs\HostConfiguration.cs" />
     <Compile Include="Configs\DBConfifuration.cs" />
     <Compile Include="AppCachesCollection.cs" />
+    <Compile Include="Interfaces\IModule.cs" />
     <Compile Include="ModulesControl\LISA.cs" />
     <Compile Include="LogLevels\Debuger.cs" />
     <Compile Include="LogLevels\Error.cs" />

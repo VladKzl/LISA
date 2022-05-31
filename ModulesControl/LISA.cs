@@ -5,9 +5,10 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using static ODDating.Program;
 using static ODDating.Variables;
-using System.Threading;
+using ODDating.Interfaces;
 
 namespace ODDating.ModulesControl
 {
@@ -27,7 +28,7 @@ namespace ODDating.ModulesControl
         }
         public void StartModules()
         {
-
+            IModule
         }
         private void RegisterModules()
         {
