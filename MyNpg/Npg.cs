@@ -22,10 +22,11 @@ namespace ODDating.MyNpg
             Connection = new NpgsqlConnection() { ConnectionString = connectionString };
             SelectCommand = new NpgsqlCommand() { CommandText = selectString, Connection = Connection };
             ConfigurateDataAdapter(outerDataSet);
-            FillDataSet(autoFill, outerDataSet);
+            if (autoFill) {
+                FillDataSet(autoFill, outerDataSet);
+            }
             ConfigurateDataSet();
-            if (creatingCommandBuilder)
-            {
+            if (creatingCommandBuilder) {
                 CommandBuilder = new NpgsqlCommandBuilder(Adapter);
             }
         }
@@ -40,10 +41,15 @@ namespace ODDating.MyNpg
                 Connection?.Close();
             }
         }
-        public void Update(DataSet dataSet, bool aceptChanges = true)
+        public void UpdateOuter(DataSet dataSet, bool aceptChanges = true)
         {
             Adapter.Update(dataSet);
             if (aceptChanges) dataSet.AcceptChanges();
+        }
+        public void UpdateInner(bool aceptChanges = true)
+        {
+            Adapter.Update(DataSet);
+            if (aceptChanges) DataSet.AcceptChanges();
         }
         private void ConfigurateDataAdapter(DataSet outerDataSet = null)
         {
