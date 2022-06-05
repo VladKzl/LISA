@@ -8,6 +8,7 @@ namespace ODDating.Interfaces
 {
     interface IModule
     {
-        void StartModule();
+        int MovePause { get; set; }
+        int RunModule();
     }
 }
