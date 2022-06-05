@@ -65,6 +65,19 @@ namespace ODDating.Configs
                 }
                 NpgObjects.UpdateInner();
             }
+            static public void NewDayRefreshColumns()
+            {
+                foreach (DataRow row in Main.Rows)
+                {
+                    if(DateTime.Today.Day != ((DateTime)row["session_ending"]).Day)
+                    {
+                        row["session_ending"] = DateTime.Now;
+                        row["sessions_count"] = 0;
+                        row["moves_count"] = 0;
+                    }
+                }
+                NpgObjects.UpdateInner();
+            }
         }
     }
 }

@@ -38,6 +38,8 @@ namespace ODDating
                                     Convert.ToInt32(proj.Variables["movePauseTo"].Value)}.Average()); // Пауза между действиями
             Variables.sessionPause = Convert.ToInt32(new[] { Convert.ToInt32(proj.Variables["sessionPauseFrom"].Value),
                                     Convert.ToInt32(proj.Variables["sessionPauseTo"].Value)}.Average()); // Новая сессия через
+            Variables.sessionDuaration = Convert.ToInt32(new[] { Convert.ToInt32(proj.Variables["sessionDurationFrom"].Value),
+                                    Convert.ToInt32(proj.Variables["sessionDurationTo"].Value)}.Average()); // Новая сессия через
             Variables.DEBUGGING = Convert.ToBoolean(proj.Variables["DEBUGGING"].Value);
             //DB
             Variables.connectionStringOddating = proj.Variables["connectionStringOddating"].Value; // Строка подключения к базе данных oddating
@@ -80,6 +82,7 @@ namespace ODDating
         private void ConfigurateDB()
         {
             DBConfifuration.OddatingMain.RefreshProfileColumn();
+            DBConfifuration.OddatingMain.NewDayRefreshColumns();
         }
     }
 }
