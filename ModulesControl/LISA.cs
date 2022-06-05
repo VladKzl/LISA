@@ -13,90 +13,161 @@ using ODDating.LogLevels;
 
 namespace ODDating.ModulesControl
 {
+    enum AccountStatus
+    {
+        Ready,
+        Done,
+        Work,
+        Off
+    }
     public class LISA : ILISA// Life Imitation System Accounts for "Odnoclassniki"
     {
+        // ILISA
         public string Account { get; set; }
         public DataRow AccountRow { get; set; }
         public int AccountRowNumber { get; set; }
         public Type[] RegisteredModules { get; set; }
+        public int StartTimeTotalMinutes
+        {
+            get => (int)(DateTime.Now - (DateTime)AccountRow["session_ending"]).TotalMinutes;
+        }
+        // ILSAZPSettings
         public int AmountMoves { get; set; } = amountMoves;
         public int MovePause { get; set; } = movePause;
         public int SessionPause { get; set; } = sessionPause;
+        public int SessionDuration { get; set; } = sessionDuaration;
+        // ILISAMainCommon
+        public DateTime Session_ending
+        {
+            get => (DateTime)AccountRow["session_ending"];
+            set {
+                lock (lockerDb)
+                    AccountRow["session_ending"] = value;
+                    NpgObjects.UpdateInner();
+            }
+        }
+        public int Sessions_count
+        {
+            get => (int)AccountRow["sessions_count"];
+            set {
+                lock (lockerDb)
+                    AccountRow["sessions_count"] =+ value;
+                    NpgObjects.UpdateInner();
+            }
+        }
+        public int Moves_count
+        {
+            get => (int)AccountRow["moves_count"];
+            set {
+                lock (lockerDb)
+                    AccountRow["moves_count"] =+ value;
+                    NpgObjects.UpdateInner();
+            }
+        }
+        public string Status
+        {
+            get => (string)AccountRow["status"];
+            set
+            {
+                AccountRow["status"] = value;
+                NpgObjects.UpdateInner();
+            }
+        }
         public LISA()
         {
             lock (lockerDb)
             {
                 Account = GetAccountName();
                 AccountRow = Main.Select().Where(row => (string)row["profile"] == Account).First();
-                AccountRow["status"] = "Work";
+                Status = nameof(AccountStatus.Work);
                 NpgObjects.UpdateInner();
             }
         }
         public void StartModules()
         {
             RegisterModules();
-            int moves_count;
             do
             {
-                moves_count = RunModule();
+                try {
+                    RunModule();
+                }
+                catch {
+                    new Fatal($"{nameof(RunModule)} не выполнен.");
+                }
             }
-            while (moves_count < AmountMoves);
+            while (CheckLimits());
         }
-        private int RunModule()
+        private bool CheckLimits()
+        {
+            Moves_count++;
+            if(StartTimeTotalMinutes < SessionDuration) // Session duration check
+            {
+                if (Moves_count < AmountMoves) // Day limit muves check
+                {
+                    return true;
+                }
+            }
+            Session_ending = DateTime.Now;
+            Sessions_count++;
+            Status = nameof(AccountStatus.Done);
+
+            return false; // Session Over!
+        }
+        private void RunModule()
         {
             Type type = RegisteredModules[new Random().Next(0, RegisteredModules.Count())];
             IModule imodule = (IModule)Activator.CreateInstance(type);
-            return imodule.RunModule();
+            imodule.RunModule();
         }
         private void RegisterModules()
         {
             try
             {
-                Type[] modules = (Type[])Assembly.GetExecutingAssembly().GetTypes().Where(type =>
+                RegisteredModules = (Type[])Assembly.GetExecutingAssembly().GetTypes().Where(type =>
                 type.Namespace == "ODDating.Modules");
-                RegisteredModules = modules;
             }
-            catch { new Fatal("Не найдено ни одного модуля! " +
+            catch 
+            { 
+                new Fatal("Не найдено ни одного модуля! " +
                 "Добавьте хотя бы один модуль. Завершили работу."); 
             }
         }
-        public delegate bool SessionCheck();
         private string GetAccountName()
         {
             List<DataRow> readyAccs = GetReadyAccs();
-/*            DateTime sessiont = (DateTime)readyAccs[2]["session_ending"];
-            DateTime now = DateTime.Now;
-            TimeSpan b = now - sessiont;
-            string c = b.ToString();
-            TimeSpan d = TimeSpan.Parse(c);
-            int e = (int)d.TotalMinutes;*/
 
             string accountName = null;
+            List<DataRow> groupedBySessionsCount = null;
             int i = 0;
-            do
+            while (accountName == null)
             {
-                List<DataRow> groupedBySessionsCount = readyAccs.Where(row =>
-                Convert.ToInt32(row["sessions_count"]) == i &&
-                (DateTime.Now - (DateTime)row["session_ending"]).TotalMinutes >= sessionPause).ToList();
-                if (groupedBySessionsCount.Count() != 0)
+                try
                 {
-                    int number = new Random().Next(0, readyAccs.Count());
-                    accountName = groupedBySessionsCount.ElementAt(number)["profile"].ToString();
+                    groupedBySessionsCount = readyAccs.Where(row =>
+                    Convert.ToInt32(row["sessions_count"]) == i &&
+                    (DateTime.Now - (DateTime)row["session_ending"]).TotalMinutes >= sessionPause).ToList();
                 }
-                i++;
+                catch(ArgumentNullException)
+                {
+                    i++;
+                    continue;
+                }
             }
-            while (accountName == null);
-            return accountName;
+            int number = new Random().Next(0, readyAccs.Count());
+            return accountName = groupedBySessionsCount.ElementAt(number)["profile"].ToString();
         }
         private List<DataRow> GetReadyAccs()
         {
-            List<DataRow> readyAccs;
-            do
+            List<DataRow> readyAccs = null;
+            while(readyAccs == null)
             {
                 Thread.Sleep(TimeSpan.FromSeconds(1.0));
-                readyAccs = Main.Select().Where(row => (string)row["status"] == "Ready").ToList();
+                try
+                {
+                    readyAccs = Main.Select().Where(row => (string)row["status"] == "Ready").ToList();
+                }
+                catch(ArgumentNullException) { continue; }
             }
-            while (readyAccs.Count() == 0);
             return readyAccs;
         }
     }

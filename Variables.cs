@@ -25,6 +25,7 @@ namespace ODDating
         public static int amountMoves; // Всего действий
         public static int movePause; // Пауза между действиями
         public static int sessionPause; // Новая сессия через
+        public static int sessionDuaration; // Время сессии
         public static bool DEBUGGING; // Режим дебага
         //DB
         public static string connectionStringOddating; //Строка подключения к базе данных oddating
