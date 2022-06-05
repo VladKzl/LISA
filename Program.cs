@@ -19,6 +19,7 @@ using ODDating.Configs;
 using static ODDating.Variables;
 using ODDating.MyNpg;
 using ODDating.LogLevels;
+using ODDating.ModulesControl;
 
 namespace ODDating
 {
@@ -35,11 +36,8 @@ namespace ODDating
         {
             try
             {
-                if (configurateAppOneTime)
-                {
-                    StartAppConfiguration(instance, project);
-                    // Отредачил
-                }
+                StartAppConfiguration(instance, project);
+                new LISA().StartModules();
             }
             catch (Error ex)
             {

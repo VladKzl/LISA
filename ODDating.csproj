@@ -157,6 +157,8 @@
     <Compile Include="Configs\DBConfifuration.cs" />
     <Compile Include="AppCachesCollection.cs" />
     <Compile Include="Interfaces\IModule.cs" />
+    <Compile Include="Interfaces\ILISA.cs" />
+    <Compile Include="Interfaces\ILSASettings.cs" />
     <Compile Include="ModulesControl\LISA.cs" />
     <Compile Include="LogLevels\Debuger.cs" />
     <Compile Include="LogLevels\Error.cs" />

@@ -32,12 +32,12 @@ namespace ODDating
         {
             #region [Main]
             //Общие настройки
-            Variables.amountMovesTo = Convert.ToInt32(proj.Variables["amountMovesTo"].Value); // Всего действий до
-            Variables.amountMovesFrom = Convert.ToInt32(proj.Variables["amountMovesFrom"].Value); // Всего действий от
-            Variables.movePauseFrom = Convert.ToInt32(proj.Variables["movePauseFrom"].Value); // Пауза между действиями от
-            Variables.movePauseTo = Convert.ToInt32(proj.Variables["movePauseTo"].Value); // Пауза между действиями до
-            Variables.sessionPauseFrom = Convert.ToInt32(proj.Variables["sessionPauseFrom"].Value); // Новая сессия через от
-            Variables.sessionPauseTo = Convert.ToInt32(proj.Variables["sessionPauseTo"].Value); // Новая сессия через от
+            Variables.amountMoves = Convert.ToInt32( new[] { Convert.ToInt32(proj.Variables["amountMovesTo"].Value), 
+                                    Convert.ToInt32(proj.Variables["amountMovesFrom"].Value)}.Average()); // Всего действий
+            Variables.movePause = Convert.ToInt32(new[] { Convert.ToInt32(proj.Variables["movePauseFrom"].Value),
+                                    Convert.ToInt32(proj.Variables["movePauseTo"].Value)}.Average()); // Пауза между действиями
+            Variables.sessionPause = Convert.ToInt32(new[] { Convert.ToInt32(proj.Variables["sessionPauseFrom"].Value),
+                                    Convert.ToInt32(proj.Variables["sessionPauseTo"].Value)}.Average()); // Новая сессия через
             Variables.DEBUGGING = Convert.ToBoolean(proj.Variables["DEBUGGING"].Value);
             //DB
             Variables.connectionStringOddating = proj.Variables["connectionStringOddating"].Value; // Строка подключения к базе данных oddating

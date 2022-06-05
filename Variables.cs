@@ -22,12 +22,9 @@ namespace ODDating
 
         #region [Main]
         //Общие настройки
-        public static int amountMovesFrom; // Всего действий от
-        public static int amountMovesTo; // Всего действий до
-        public static int movePauseFrom; // Пауза между действиями от
-        public static int movePauseTo; // Пауза между действиями до
-        public static int sessionPauseFrom; // Новая сессия через от
-        public static int sessionPauseTo; // Новая сессия через до
+        public static int amountMoves; // Всего действий
+        public static int movePause; // Пауза между действиями
+        public static int sessionPause; // Новая сессия через
         public static bool DEBUGGING; // Режим дебага
         //DB
         public static string connectionStringOddating; //Строка подключения к базе данных oddating

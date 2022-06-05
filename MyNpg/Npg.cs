@@ -76,8 +76,10 @@ namespace ODDating.MyNpg
         {
             // Костыль. Устанавливаем default для столбцов, так как при апдейте они не появляются автоматически.
             DataSet.Tables["main"].Columns["filling"].DefaultValue = "No";
-            DataSet.Tables["main"].Columns["session_ending"].DefaultValue = TimeSpan.Parse(DateTime.Now.ToString("hh:mm:ss"));
             DataSet.Tables["main"].Columns["status"].DefaultValue = "Ready";
+            DataSet.Tables["main"].Columns["session_ending"].DefaultValue = DateTime.Now;/*TimeSpan.Parse(DateTime.Now.ToString("yyyy-mm-dd hh:mm:ss"));*/
+            DataSet.Tables["main"].Columns["sessions_count"].DefaultValue = 0;
+            DataSet.Tables["main"].Columns["moves_count"].DefaultValue = 0;
         }
     }
 }
