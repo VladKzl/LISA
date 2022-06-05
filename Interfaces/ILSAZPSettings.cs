@@ -11,5 +11,6 @@ namespace ODDating.Interfaces
         int AmountMoves { get; set; }
         int MovePause { get; set; }
         int SessionPause { get; set; }
+        int SessionDuration { get; set; }
     }
 }

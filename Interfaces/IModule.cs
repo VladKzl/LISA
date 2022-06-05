@@ -9,6 +9,6 @@ namespace ODDating.Interfaces
     interface IModule
     {
         int MovePause { get; set; }
-        int RunModule();
+        void RunModule();
     }
 }
