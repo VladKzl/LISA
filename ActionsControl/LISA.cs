@@ -9,9 +9,10 @@ using System.Threading;
 using static ODDating.Program;
 using static ODDating.Variables;
 using ODDating.Interfaces;
-using ODDating.LogLevels;
+using LogLevels;
+using ODDating.Actions;
 
-namespace ODDating.ModulesControl
+namespace ODDating.ActionsControl
 {
     enum AccountStatus
     {
@@ -26,7 +27,7 @@ namespace ODDating.ModulesControl
         public string Account { get; set; }
         public DataRow AccountRow { get; set; }
         public int AccountRowNumber { get; set; }
-        public Type[] RegisteredModules { get; set; }
+        public Type[] RegisteredActions { get; set; }
         public int StartTimeTotalMinutes
         {
             get => (int)(DateTime.Now - (DateTime)AccountRow["session_ending"]).TotalMinutes;
@@ -83,16 +84,16 @@ namespace ODDating.ModulesControl
                 NpgObjects.UpdateInner();
             }
         }
-        public void StartModules()
+        public void StartActions()
         {
-            RegisterModules();
+            RegisterActions();
             do
             {
                 try {
-                    RunModule();
+                    RunAction();
                 }
                 catch {
-                    new Fatal($"{nameof(RunModule)} не выполнен.");
+                    new Fatal($"{nameof(RunAction)} не выполнен.");
                 }
             }
             while (CheckLimits());
@@ -113,23 +114,23 @@ namespace ODDating.ModulesControl
 
             return false; // Session Over!
         }
-        private void RunModule()
+        private void RunAction()
         {
-            Type type = RegisteredModules[new Random().Next(0, RegisteredModules.Count())];
-            IModule imodule = (IModule)Activator.CreateInstance(type);
-            imodule.RunModule();
+            Type type = RegisteredActions[new Random().Next(0, RegisteredActions.Count())];
+            ActionBase imodule = (ActionBase)Activator.CreateInstance(type);
+            imodule.RunAction();
         }
-        private void RegisterModules()
+        private void RegisterActions()
         {
             try
             {
-                RegisteredModules = (Type[])Assembly.GetExecutingAssembly().GetTypes().Where(type =>
-                type.Namespace == "ODDating.Modules");
+                RegisteredActions = (Type[])Assembly.GetExecutingAssembly().GetTypes().Where(type =>
+                type.Namespace == "ODDating.Actions");
             }
             catch 
             { 
-                new Fatal("Не найдено ни одного модуля! " +
-                "Добавьте хотя бы один модуль. Завершили работу."); 
+                new Fatal("Не найдено ни одного Action! " +
+                "Добавьте хотя бы один Action. Завершили работу."); 
             }
         }
         private string GetAccountName()

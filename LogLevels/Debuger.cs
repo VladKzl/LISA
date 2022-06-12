@@ -21,7 +21,7 @@ using System.IO;
 using static ODDating.Program;
 using static ODDating.Variables;
 
-namespace ODDating.LogLevels
+namespace LogLevels
 {
     public class Debuger
     {

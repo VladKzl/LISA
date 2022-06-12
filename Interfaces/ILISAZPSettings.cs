@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ODDating.Interfaces
 {
-    interface ILSAZPSettings
+    interface ILISAZPSettings
     {
         int AmountMoves { get; set; }
         int MovePause { get; set; }

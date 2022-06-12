@@ -11,7 +11,7 @@ using Npgsql;
 using static ODDating.Program;
 using static ODDating.AppCachesCollection;
 using static ODDating.Variables;
-using ODDating.LogLevels;
+using LogLevels;
 
 namespace ODDating.Configs
 {

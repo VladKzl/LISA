@@ -12,23 +12,25 @@ using ZennoLab.Emulation;
 using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoLab.InterfacesLibrary.ProjectModel.Enums;
 using System.Configuration;
+using ZPBase;
 using ODDating.MyNpg;
 using ODDating.Configs;
 using Microsoft.Extensions.Caching.Memory;
+using ODDating.Interfaces;
 
 namespace ODDating
 {
-    public class AppConfiguration
+    public class AppConfiguration : IAppConfiguration
     {
-        public AppConfiguration(Instance inst, IZennoPosterProjectModel proj)
+        public AppConfiguration(Instance instance, IZennoPosterProjectModel proj)
         {
-            ConfigurateVariables(inst, proj);
-            ConfigurateProgram(inst, proj);
+            ConfigurateVariables(instance, proj);
+            ConfigurateProgram(instance, proj);
             ConfigurateAppCahcesCollection();
             ConfigurateHost();
             ConfigurateDB();
         }
-        private void ConfigurateVariables(Instance inst, IZennoPosterProjectModel proj)
+        public void ConfigurateVariables(Instance instance, IZennoPosterProjectModel proj)
         {
             #region [Main]
             //Общие настройки
@@ -62,24 +64,24 @@ namespace ODDating
             Variables.generalFatalAndErrorLogPath = proj.GlobalVariables["LogLevels", "generalFatalAndErrorLogPath"].Value;
             #endregion
         }
-        private void ConfigurateProgram(Instance inst, IZennoPosterProjectModel proj)
+        public void ConfigurateProgram(Instance instance, IZennoPosterProjectModel proj)
         {
-            Program.instance = inst;
-            Program.project = proj;
+            ProgramBase.instance = instance;
+            ProgramBase.project = proj;
             Program.NpgObjects = new Npg(Variables.connectionStringOddating, "select * from main; select * from groups", true);
             Program.Main = Program.NpgObjects.DataSet.Tables["main"];
             Program.Groups = Program.NpgObjects.DataSet.Tables["groups"];
         }
-        private void ConfigurateAppCahcesCollection()
+        public void ConfigurateAppCahcesCollection()
         {
             AppCachesCollection.ConfigurationCache = new MemoryCache(new MemoryCacheOptions());
             AppCachesCollection.ConfigurationCache = new MemoryCache(new MemoryCacheOptions());
         }
-        private void ConfigurateHost()  
+        public void ConfigurateHost()  
         {
             HostConfiguration.FillProjectProfilesDirectory();
         }
-        private void ConfigurateDB()
+        public void ConfigurateDB()
         {
             DBConfifuration.OddatingMain.RefreshProfileColumn();
             DBConfifuration.OddatingMain.NewDayRefreshColumns();
