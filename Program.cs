@@ -18,26 +18,24 @@ using System.Globalization;
 using ODDating.Configs;
 using static ODDating.Variables;
 using ODDating.MyNpg;
-using ODDating.LogLevels;
-using ODDating.ModulesControl;
+using LogLevels;
+using ODDating.ActionsControl;
+using ODDating.Interfaces;
+using ZPBase;
 
 namespace ODDating
 {
-    public class Program : IZennoExternalCode
+    public class Program : ProgramBase, IZennoExternalCode
     {
-        [ThreadStatic]
-        public static Instance instance;
-        [ThreadStatic]
-        public static IZennoPosterProjectModel project;
-        public static Npg NpgObjects { get; set; }
         public static DataTable Main { get; set; }
         public static DataTable Groups { get; set; }
+        public static Npg NpgObjects { get; set; }
         public int Execute(Instance instance, IZennoPosterProjectModel project) // main
         {
             try
             {
                 StartAppConfiguration(instance, project);
-                new LISA().StartModules();
+                new LISA().StartActions();
             }
             catch (Error ex)
             {
