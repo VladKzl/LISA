@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ODDating.Interfaces
 {
-    interface ILISA : ILISAZPSettings, ILISAMainCommon
+    interface ILISA : ILISAZPSettings
     {
         string Account { get; set; }
         DataRow AccountRow { get; set; }

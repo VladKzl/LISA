@@ -16,7 +16,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Drawing;
 using System.Collections;
-using static ZPBase.ProgramBase;
+using static ZPBase.Base;
 
 namespace ZPExtensionsMethods
 {

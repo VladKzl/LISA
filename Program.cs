@@ -17,7 +17,7 @@ using System.Configuration;
 using System.Globalization;
 using ODDating.Configs;
 using static ODDating.Variables;
-using ODDating.MyNpg;
+using MyNpg;
 using LogLevels;
 using ODDating.ActionsControl;
 using ODDating.Interfaces;
@@ -25,11 +25,9 @@ using ZPBase;
 
 namespace ODDating
 {
-    public class Program : ProgramBase, IZennoExternalCode
+    public class Program : Base, IZennoExternalCode
     {
-        public static DataTable Main { get; set; }
-        public static DataTable Groups { get; set; }
-        public static Npg NpgObjects { get; set; }
+        public static Npg Npg { get; set; }
         public int Execute(Instance instance, IZennoPosterProjectModel project) // main
         {
             try

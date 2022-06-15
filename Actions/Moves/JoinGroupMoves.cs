@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using static ZPExtensionsMethods.HtmlEllementExtentions;
 using static ZPExtensionsMethods.TabExtentions;
 using static ZPExtensionsMethods.MoveCheckExtensions;
-using static ZPBase.ProgramBase;
+using static ZPBase.Base;
+using ODDating.ProjectBase;
 
 namespace ODDating.Actions.Moves
 {

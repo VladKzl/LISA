@@ -12,8 +12,8 @@ using ZennoLab.Emulation;
 using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoLab.InterfacesLibrary.ProjectModel.Enums;
 using System.Configuration;
-using ZPBase;
-using ODDating.MyNpg;
+using static ZPBase.Base;
+using MyNpg;
 using ODDating.Configs;
 using Microsoft.Extensions.Caching.Memory;
 using ODDating.Interfaces;
@@ -22,15 +22,15 @@ namespace ODDating
 {
     public class AppConfiguration : IAppConfiguration
     {
-        public AppConfiguration(Instance instance, IZennoPosterProjectModel proj)
+        public AppConfiguration(Instance inst, IZennoPosterProjectModel proj)
         {
-            ConfigurateVariables(instance, proj);
-            ConfigurateProgram(instance, proj);
+            ConfigurateVariables(inst, proj);
+            ConfigurateProgram(inst, proj);
             ConfigurateAppCahcesCollection();
             ConfigurateHost();
             ConfigurateDB();
         }
-        public void ConfigurateVariables(Instance instance, IZennoPosterProjectModel proj)
+        public void ConfigurateVariables(Instance inst, IZennoPosterProjectModel proj)
         {
             #region [Main]
             //Общие настройки
@@ -64,13 +64,17 @@ namespace ODDating
             Variables.generalFatalAndErrorLogPath = proj.GlobalVariables["LogLevels", "generalFatalAndErrorLogPath"].Value;
             #endregion
         }
-        public void ConfigurateProgram(Instance instance, IZennoPosterProjectModel proj)
+        public void ConfigurateProgram(Instance inst, IZennoPosterProjectModel proj)
         {
-            ProgramBase.instance = instance;
-            ProgramBase.project = proj;
-            Program.NpgObjects = new Npg(Variables.connectionStringOddating, "select * from main; select * from groups", true);
-            Program.Main = Program.NpgObjects.DataSet.Tables["main"];
-            Program.Groups = Program.NpgObjects.DataSet.Tables["groups"];
+            ConfigurateNpg();
+            instance = inst;
+            project = proj;
+        }
+        public void ConfigurateNpg()
+        {
+            Program.Npg = new Npg(Variables.connectionStringOddating, "select * from main; select * from groups", true, StaticNpg.DataSet);
+            StaticNpg.Main = Program.Npg.DataSet.Tables["main"];
+            StaticNpg.Groups = Program.Npg.DataSet.Tables["groups"];
         }
         public void ConfigurateAppCahcesCollection()
         {

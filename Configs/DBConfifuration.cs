@@ -63,7 +63,7 @@ namespace ODDating.Configs
                     }
                     new Info("Добавили новые профили");
                 }
-                NpgObjects.UpdateInner();
+                Npg.UpdateInner();
             }
             static public void NewDayRefreshColumns()
             {
@@ -76,7 +76,7 @@ namespace ODDating.Configs
                         row["moves_count"] = 0;
                     }
                 }
-                NpgObjects.UpdateInner();
+                Npg.UpdateInner();
             }
         }
     }

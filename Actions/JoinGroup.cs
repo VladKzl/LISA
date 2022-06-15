@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ZPExtensionsMethods;
 using static ODDating.Variables;
 using ODDating.Actions.Moves;
+using ODDating.ProjectBase;
 
 namespace ODDating.Actions
 {
@@ -20,10 +21,10 @@ namespace ODDating.Actions
         }
         public override void RunAction()
         {
-            Move0_BrowseStartPage();
+            Move0_BrowseStartPage(0);
 
         }
-        public override void Move0_BrowseStartPage()
+        public override void Move0_BrowseStartPage(int tabNum)
         {
             Moves.Move0(StartPageUrl);
         }

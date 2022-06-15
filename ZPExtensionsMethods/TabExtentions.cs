@@ -18,14 +18,14 @@ using System.Drawing;
 using System.Collections;
 using System.Threading;
 using LogLevels;
-using static ZPBase.ProgramBase;
+using static ZPBase.Base;
 
 
 namespace ZPExtensionsMethods
 {
     public static class TabExtentions
     {
-        private static void CheckTab()
+        private static void CheckTab(this Tab tab)
         {
             tab.WaitDownloading();
             if (tab.IsVoid || tab.IsNull)

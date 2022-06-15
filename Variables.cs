@@ -11,7 +11,7 @@ using ZennoLab.CommandCenter;
 using ZennoLab.Emulation;
 using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoLab.InterfacesLibrary.ProjectModel.Enums;
-using ODDating.MyNpg;
+using MyNpg;
 using System.Configuration;
 using ODDating;
 

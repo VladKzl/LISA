@@ -18,8 +18,8 @@ using NLog;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.IO;
-using static ODDating.Program;
 using static ODDating.Variables;
+using static ZPBase.Base;
 
 namespace LogLevels
 {

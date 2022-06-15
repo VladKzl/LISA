@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Npgsql;
 
-namespace ODDating.MyNpg
+namespace MyNpg
 {
     public class Npg
     {
@@ -21,11 +21,10 @@ namespace ODDating.MyNpg
         {
             Connection = new NpgsqlConnection() { ConnectionString = connectionString };
             SelectCommand = new NpgsqlCommand() { CommandText = selectString, Connection = Connection };
-            ConfigurateDataAdapter(outerDataSet);
+            ConfigurateDataAdapter();
             if (autoFill) {
-                FillDataSet(autoFill, outerDataSet);
+                FillDataSet(outerDataSet);
             }
-            ConfigurateDataSet();
             if (creatingCommandBuilder) {
                 CommandBuilder = new NpgsqlCommandBuilder(Adapter);
             }
@@ -51,7 +50,7 @@ namespace ODDating.MyNpg
             Adapter.Update(DataSet);
             if (aceptChanges) DataSet.AcceptChanges();
         }
-        private void ConfigurateDataAdapter(DataSet outerDataSet = null)
+        private void ConfigurateDataAdapter()
         {
             Adapter = new NpgsqlDataAdapter(SelectCommand);
             Adapter.MissingMappingAction = MissingMappingAction.Passthrough;
@@ -59,27 +58,40 @@ namespace ODDating.MyNpg
             Adapter.TableMappings.Add("Table", "main");
             Adapter.TableMappings.Add("Table1", "groups");
         }
-        private void FillDataSet(bool autoFill, DataSet outerDataSet = null)
+        private void FillDataSet(DataSet outerDataSet = null)
         {
             if (outerDataSet != null)
             {
                 Adapter.FillSchema(outerDataSet, SchemaType.Mapped);
                 Adapter.Fill(outerDataSet);
+                ConfigurateDataSet();
             }
             else
             {
                 Adapter.FillSchema(DataSet, SchemaType.Mapped);
                 Adapter.Fill(DataSet);
+                ConfigurateDataSet();
             }
         }
-        private void ConfigurateDataSet()
+        private void ConfigurateDataSet(DataSet outerDataSet = null)
         {
-            // Костыль. Устанавливаем default для столбцов, так как при апдейте они не появляются автоматически.
-            DataSet.Tables["main"].Columns["filling"].DefaultValue = "No";
-            DataSet.Tables["main"].Columns["status"].DefaultValue = "Ready";
-            DataSet.Tables["main"].Columns["session_ending"].DefaultValue = DateTime.Now;/*TimeSpan.Parse(DateTime.Now.ToString("yyyy-mm-dd hh:mm:ss"));*/
-            DataSet.Tables["main"].Columns["sessions_count"].DefaultValue = 0;
-            DataSet.Tables["main"].Columns["moves_count"].DefaultValue = 0;
+            if (outerDataSet != null)
+            {
+                // Костыль. Устанавливаем default для столбцов, так как при апдейте они не появляются автоматически.
+                outerDataSet.Tables["main"].Columns["filling"].DefaultValue = "No";
+                outerDataSet.Tables["main"].Columns["status"].DefaultValue = "Ready";
+                outerDataSet.Tables["main"].Columns["session_ending"].DefaultValue = DateTime.Now;/*TimeSpan.Parse(DateTime.Now.ToString("yyyy-mm-dd hh:mm:ss"));*/
+                outerDataSet.Tables["main"].Columns["sessions_count"].DefaultValue = 0;
+                outerDataSet.Tables["main"].Columns["moves_count"].DefaultValue = 0;
+            }
+            else
+            {
+                DataSet.Tables["main"].Columns["filling"].DefaultValue = "No";
+                DataSet.Tables["main"].Columns["status"].DefaultValue = "Ready";
+                DataSet.Tables["main"].Columns["session_ending"].DefaultValue = DateTime.Now;/
+                DataSet.Tables["main"].Columns["sessions_count"].DefaultValue = 0;
+                DataSet.Tables["main"].Columns["moves_count"].DefaultValue = 0;
+            }
         }
     }
 }

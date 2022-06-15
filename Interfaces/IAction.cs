@@ -15,7 +15,7 @@ namespace ODDating.Interfaces
         IZennoPosterProjectModel project { get; set; }
         string Account { get; set; }
         string StartPageUrl { get; set; }
-        void Move0_BrowseStartPage(int tabNum)
+        void Move0_BrowseStartPage(int tabNum);
         void RunAction();
     }
 }

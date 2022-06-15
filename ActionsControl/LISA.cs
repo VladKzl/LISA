@@ -8,9 +8,14 @@ using System.Threading.Tasks;
 using System.Threading;
 using static ODDating.Program;
 using static ODDating.Variables;
+using static MyNpg.StaticNpg;
 using ODDating.Interfaces;
 using LogLevels;
 using ODDating.Actions;
+using static ZPBase.Base;
+using ODDating.Models;
+using static MyNpg.StaticNpg;
+using ODDating.ProjectBase;
 
 namespace ODDating.ActionsControl
 {
@@ -21,7 +26,7 @@ namespace ODDating.ActionsControl
         Work,
         Off
     }
-    public class LISA : ILISA// Life Imitation System Accounts for "Odnoclassniki"
+    public class LISA : AllColumns, ILISA// Life Imitation System Accounts for "Odnoclassniki"
     {
         // ILISA
         public string Account { get; set; }
@@ -37,51 +42,14 @@ namespace ODDating.ActionsControl
         public int MovePause { get; set; } = movePause;
         public int SessionPause { get; set; } = sessionPause;
         public int SessionDuration { get; set; } = sessionDuaration;
-        // ILISAMainCommon
-        public DateTime Session_ending
-        {
-            get => (DateTime)AccountRow["session_ending"];
-            set {
-                lock (lockerDb)
-                    AccountRow["session_ending"] = value;
-                    NpgObjects.UpdateInner();
-            }
-        }
-        public int Sessions_count
-        {
-            get => (int)AccountRow["sessions_count"];
-            set {
-                lock (lockerDb)
-                    AccountRow["sessions_count"] =+ value;
-                    NpgObjects.UpdateInner();
-            }
-        }
-        public int Moves_count
-        {
-            get => (int)AccountRow["moves_count"];
-            set {
-                lock (lockerDb)
-                    AccountRow["moves_count"] =+ value;
-                    NpgObjects.UpdateInner();
-            }
-        }
-        public string Status
-        {
-            get => (string)AccountRow["status"];
-            set
-            {
-                AccountRow["status"] = value;
-                NpgObjects.UpdateInner();
-            }
-        }
         public LISA()
         {
-            lock (lockerDb)
+            lock (lockerDb) 
             {
                 Account = GetAccountName();
                 AccountRow = Main.Select().Where(row => (string)row["profile"] == Account).First();
                 Status = nameof(AccountStatus.Work);
-                NpgObjects.UpdateInner();
+                Npg.UpdateInner();
             }
         }
         public void StartActions()
@@ -89,10 +57,12 @@ namespace ODDating.ActionsControl
             RegisterActions();
             do
             {
-                try {
+                try 
+                {
                     RunAction();
                 }
-                catch {
+                catch 
+                {
                     new Fatal($"{nameof(RunAction)} не выполнен.");
                 }
             }
@@ -129,7 +99,7 @@ namespace ODDating.ActionsControl
             }
             catch 
             { 
-                new Fatal("Не найдено ни одного Action! " +
+                throw new Fatal("Не найдено ни одного Action! " +
                 "Добавьте хотя бы один Action. Завершили работу."); 
             }
         }
