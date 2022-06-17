@@ -11,11 +11,9 @@ namespace ODDating.Interfaces
 {
     interface IAction
     {
-        Instance instance { get; set; }
-        IZennoPosterProjectModel project { get; set; }
+        bool ON { get; set; }
         string Account { get; set; }
         string StartPageUrl { get; set; }
-        void Move0_BrowseStartPage(int tabNum);
         void RunAction();
     }
 }

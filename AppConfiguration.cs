@@ -17,6 +17,7 @@ using MyNpg;
 using ODDating.Configs;
 using Microsoft.Extensions.Caching.Memory;
 using ODDating.Interfaces;
+using ODDating.Entityes;
 
 namespace ODDating
 {
@@ -63,6 +64,9 @@ namespace ODDating
             Variables.generalTraceAndDebugLogPath = proj.GlobalVariables["LogLevels","generalTraceAndDebugLogPath"].Value;
             Variables.generalFatalAndErrorLogPath = proj.GlobalVariables["LogLevels", "generalFatalAndErrorLogPath"].Value;
             #endregion
+            #region [URLs начальных страниц действий]
+            Variables.groupsToJoinTo = Convert.ToInt32(proj.Variables["groupsToJoinTo"].Value); // Вступить в группы до
+            #endregion
         }
         public void ConfigurateProgram(Instance inst, IZennoPosterProjectModel proj)
         {
@@ -72,9 +76,9 @@ namespace ODDating
         }
         public void ConfigurateNpg()
         {
-            Program.Npg = new Npg(Variables.connectionStringOddating, "select * from main; select * from groups", true, StaticNpg.DataSet);
-            StaticNpg.Main = Program.Npg.DataSet.Tables["main"];
-            StaticNpg.Groups = Program.Npg.DataSet.Tables["groups"];
+            Program.Npg = new Npg(Variables.connectionStringOddating, "select * from main; select * from groups", true, DBContext.DataSet);
+            DBContext.Main = DBContext.DataSet.Tables["main"];
+            DBContext.Groups = DBContext.DataSet.Tables["groups"];
         }
         public void ConfigurateAppCahcesCollection()
         {

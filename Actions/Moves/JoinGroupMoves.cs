@@ -11,16 +11,17 @@ using ODDating.ProjectBase;
 
 namespace ODDating.Actions.Moves
 {
-    class JoinGroupMoves : MoveBase
+    public class JoinGroupMoves : MoveBase
     {
-        public void Move0(string StartPageUrl)
+        public JoinGroupMoves(string startPageUrl) : base(startPageUrl)
         {
-            instance.ClearCache();
-            instance.ClearCookie();
-            project.Profile.Load(Account);
-            instance.AllTabs.TryTabsNavigate(0, "yandex.ru");// костыль яндекс
-            instance.AllTabs.TryTabsNavigate(0, StartPageUrl, "yandex.ru");
-            CheckChangePassword();
+        }
+        public static void Move1_GoToMyGroups()
+        {
+            string groupsButton = proj.GlobalVariables["GroupJoiner", "Move1_groupsButtonXpath"].Value;
+            string exeptionMessage = $"Кнопка группы Move1_groupsButtonXpath не найдена, требуется проверка вручную";
+            HtmlElement element = MovesCheck.IsElementDownload(groupsButton, exeptionMessage);
+            element.ClickAndWait();
         }
     }
 }

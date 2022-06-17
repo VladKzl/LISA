@@ -10,9 +10,8 @@ namespace MyNpg
 {
     public class Npg
     {
+        public DataSet OuterDataSet { get; set; }
         public DataSet DataSet { get; set; } = new DataSet();
-        public DataTable Main { get; set; }
-        public DataTable Groups { get; set; }
         public NpgsqlConnection Connection { get; set; }
         public NpgsqlCommand SelectCommand { get; set; }
         public NpgsqlDataAdapter Adapter { get; set; }
@@ -24,6 +23,10 @@ namespace MyNpg
             ConfigurateDataAdapter();
             if (autoFill) {
                 FillDataSet(outerDataSet);
+            }
+            if (outerDataSet != null)
+            {
+                OuterDataSet = outerDataSet;
             }
             if (creatingCommandBuilder) {
                 CommandBuilder = new NpgsqlCommandBuilder(Adapter);
@@ -40,10 +43,10 @@ namespace MyNpg
                 Connection?.Close();
             }
         }
-        public void UpdateOuter(DataSet dataSet, bool aceptChanges = true)
+        public void UpdateOuter(bool aceptChanges = true)
         {
-            Adapter.Update(dataSet);
-            if (aceptChanges) dataSet.AcceptChanges();
+            Adapter.Update(OuterDataSet);
+            if (aceptChanges) OuterDataSet.AcceptChanges();
         }
         public void UpdateInner(bool aceptChanges = true)
         {
@@ -88,7 +91,7 @@ namespace MyNpg
             {
                 DataSet.Tables["main"].Columns["filling"].DefaultValue = "No";
                 DataSet.Tables["main"].Columns["status"].DefaultValue = "Ready";
-                DataSet.Tables["main"].Columns["session_ending"].DefaultValue = DateTime.Now;/
+                DataSet.Tables["main"].Columns["session_ending"].DefaultValue = DateTime.Now;
                 DataSet.Tables["main"].Columns["sessions_count"].DefaultValue = 0;
                 DataSet.Tables["main"].Columns["moves_count"].DefaultValue = 0;
             }

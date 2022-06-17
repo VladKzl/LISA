@@ -152,22 +152,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\AllColumns.cs" />
-    <Compile Include="Models\Main.cs" />
+    <Compile Include="LISA\Common.cs" />
+    <Compile Include="LISA\Service.cs" />
     <Compile Include="ProjectBase\MoveBase.cs" />
     <Compile Include="Actions\Moves\JoinGroupMoves.cs" />
-    <Compile Include="MyNpg\IStaticNpg.cs" />
+    <Compile Include="Entityes\DBContext.cs" />
     <Compile Include="ZPBase\IZPBase.cs" />
-    <Compile Include="MyNpg\StaticNpg.cs" />
+    <Compile Include="ZPBase\ZPBase.cs" />
     <Compile Include="ZPExtensionsMethods\MoveCheckExtensions.cs" />
     <Compile Include="AppConfiguration.cs" />
     <Compile Include="Configs\HostConfiguration.cs" />
     <Compile Include="Configs\DBConfifuration.cs" />
     <Compile Include="AppCachesCollection.cs" />
     <Compile Include="Interfaces\IAction.cs" />
-    <Compile Include="Interfaces\ILISA.cs" />
-    <Compile Include="Interfaces\ILISAZPSettings.cs" />
-    <Compile Include="ActionsControl\LISA.cs" />
+    <Compile Include="LISA\Interfaces\ICommon.cs" />
+    <Compile Include="LISA\Interfaces\IZPSettings.cs" />
+    <Compile Include="LISA\ActionsControl.cs" />
     <Compile Include="Interfaces\IAppConfiguration.cs" />
     <Compile Include="LogLevels\Debuger.cs" />
     <Compile Include="LogLevels\Error.cs" />
@@ -179,7 +179,6 @@
     <Compile Include="Actions\JoinGroup.cs" />
     <Compile Include="MyNpg\Npg.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="ZPBase\ZPBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Variables.cs" />
     <Compile Include="ZPExtensionsMethods\HtmlEllementExtentions.cs" />

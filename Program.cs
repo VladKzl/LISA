@@ -19,9 +19,9 @@ using ODDating.Configs;
 using static ODDating.Variables;
 using MyNpg;
 using LogLevels;
-using ODDating.ActionsControl;
 using ODDating.Interfaces;
 using ZPBase;
+using LISA;
 
 namespace ODDating
 {
@@ -33,20 +33,9 @@ namespace ODDating
             try
             {
                 StartAppConfiguration(instance, project);
-                new LISA().StartActions();
+                ActionsControl LISA = new ActionsControl();
+                LISA.StartActions();
             }
-            catch (Error ex)
-            {
-                string error = ex.Message;
-            }
-            catch (Fatal ex)
-            {
-                string fatal = ex.Message;
-            }
-/*            catch (Exception ex)
-            {
-                new Fatal("Exeption" + ex.Message);
-            }*/
             finally
             {
 

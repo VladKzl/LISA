@@ -11,22 +11,15 @@ using ODDating.ProjectBase;
 
 namespace ODDating.Actions
 {
-    public class JoinGroup : ActionBase
+    public class JoinGroup : ActionBase<JoinGroupMoves>
     {
-        public override string StartPageUrl { get; set; }
-        JoinGroupMoves Moves { get; set; } = new JoinGroupMoves();
-        public JoinGroup(string StartPageUrl)
+        public JoinGroup(bool on, string startPageUrl ) : base(on, startPageUrl)
         {
-            this.StartPageUrl = StartPageUrl;
+            Moves = new JoinGroupMoves(StartPageUrl);
         }
         public override void RunAction()
         {
-            Move0_BrowseStartPage(0);
-
-        }
-        public override void Move0_BrowseStartPage(int tabNum)
-        {
-            Moves.Move0(StartPageUrl);
+            
         }
     }
 }

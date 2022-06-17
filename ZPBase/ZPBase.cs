@@ -15,15 +15,5 @@ namespace ZPBase
         public static Instance instance;
         [ThreadStatic]
         public static IZennoPosterProjectModel project;
-/*        private Instance Instance
-        {
-            get => instance;
-            set { instance = value; }
-        }
-        public IZennoPosterProjectModel Project
-        {
-            get => project;
-            set { project = value; }
-        }*/
     }
 }
