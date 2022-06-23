@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static ODDating.Variables;
-using ZPBase;
+using static ZPBase.Base;
 
 namespace LISA
 {
@@ -18,7 +18,7 @@ namespace LISA
         Work,
         Off
     }
-    public class Common : Base, ICommon
+    public class Common : ICommon
     {
         public string Account { get; set; }
         public DataRow AccountRow { get; set; }

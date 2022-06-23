@@ -9,8 +9,8 @@ namespace ODDating.Entityes
 {
     public static class DBContext
     {
-        public static DataSet DataSet { get; set; }
-        public static DataTable Main { get; set; }
-        public static DataTable Groups { get; set; }
+        public static DataSet DataSet { get; set; } = new DataSet();
+        public static DataTable Main { get; set; } = new DataTable();
+        public static DataTable Groups { get; set; } = new DataTable();
     } 
 }

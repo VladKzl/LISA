@@ -10,7 +10,7 @@ namespace MyNpg
 {
     public class Npg
     {
-        public DataSet OuterDataSet { get; set; }
+        private DataSet OuterDataSet { get; set; }
         public DataSet DataSet { get; set; } = new DataSet();
         public NpgsqlConnection Connection { get; set; }
         public NpgsqlCommand SelectCommand { get; set; }
@@ -20,13 +20,10 @@ namespace MyNpg
         {
             Connection = new NpgsqlConnection() { ConnectionString = connectionString };
             SelectCommand = new NpgsqlCommand() { CommandText = selectString, Connection = Connection };
+            OuterDataSet = outerDataSet;
             ConfigurateDataAdapter();
             if (autoFill) {
                 FillDataSet(outerDataSet);
-            }
-            if (outerDataSet != null)
-            {
-                OuterDataSet = outerDataSet;
             }
             if (creatingCommandBuilder) {
                 CommandBuilder = new NpgsqlCommandBuilder(Adapter);
@@ -76,16 +73,16 @@ namespace MyNpg
                 ConfigurateDataSet();
             }
         }
-        private void ConfigurateDataSet(DataSet outerDataSet = null)
+        private void ConfigurateDataSet()
         {
-            if (outerDataSet != null)
+            if (OuterDataSet != null)
             {
                 // Костыль. Устанавливаем default для столбцов, так как при апдейте они не появляются автоматически.
-                outerDataSet.Tables["main"].Columns["filling"].DefaultValue = "No";
-                outerDataSet.Tables["main"].Columns["status"].DefaultValue = "Ready";
-                outerDataSet.Tables["main"].Columns["session_ending"].DefaultValue = DateTime.Now;/*TimeSpan.Parse(DateTime.Now.ToString("yyyy-mm-dd hh:mm:ss"));*/
-                outerDataSet.Tables["main"].Columns["sessions_count"].DefaultValue = 0;
-                outerDataSet.Tables["main"].Columns["moves_count"].DefaultValue = 0;
+                OuterDataSet.Tables["main"].Columns["filling"].DefaultValue = "No";
+                OuterDataSet.Tables["main"].Columns["status"].DefaultValue = "Ready";
+                OuterDataSet.Tables["main"].Columns["session_ending"].DefaultValue = DateTime.Now;/*TimeSpan.Parse(DateTime.Now.ToString("yyyy-mm-dd hh:mm:ss"));*/
+                OuterDataSet.Tables["main"].Columns["sessions_count"].DefaultValue = 0;
+                OuterDataSet.Tables["main"].Columns["moves_count"].DefaultValue = 0;
             }
             else
             {

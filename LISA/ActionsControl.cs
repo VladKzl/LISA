@@ -11,7 +11,6 @@ using static ODDating.Variables;
 using ODDating.Interfaces;
 using LogLevels;
 using ODDating.Actions;
-using static ZPBase.Base;
 using ODDating.Entityes;
 using ODDating.ProjectBase;
 
@@ -42,8 +41,16 @@ namespace LISA
         private void RunAction()
         {
             Type type = RegisteredActions[new Random().Next(0, RegisteredActions.Count())];
-            IAction action = (IAction)Activator.CreateInstance(type);
-            action.RunAction();
+            try
+            {
+                IAction action = (IAction)Activator.CreateInstance(type, groupsOn, ActionsStartUrls[type.Name], MovesXpaths[type.Name]);
+                action.RunAction();
+            }
+            catch
+            {
+                throw new Fatal("Начального url не найдено. " +
+                    "Проверьте названия ваших действий, они должны совпадать с названиями начальных url.");
+            }
         }
         private void RegisterActions()
         {

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using ODDating;
 using static ODDating.Program;
 using static ODDating.Variables;
+using static ODDating.Entityes.DBContext;
 
 namespace ODDating.Configs
 {
@@ -20,17 +21,23 @@ namespace ODDating.Configs
         {
             List<string> lisaProfiles = new List<string>(Directory.GetFiles(lisaProfilesPath));
             List<string> projectProfiles = new List<string>(Directory.GetFiles(ODDatingProfilesPath));
-            if (projectProfiles.Count is 0)
+
+            if (projectProfiles.Count == 0)
             {
-                List<string> allProfiles = new List<string>();
+                List<string> profiles = new List<string>();
+
                 foreach (string profile in lisaProfiles)
                 {
                     File.Copy(profile, Path.Combine(ODDatingProfilesPath, Regex.Match(profile, @"(?<=Profiles\\).*").Value));
-                    allProfiles.Add(Regex.Match(profile, @"(?<=Profiles\\).*").Value);
+                    if (IsProfileExistInDb(profile))
+                    {
+                        /*profiles.Add(Regex.Match(profile, @"(?<=Profiles\\).*").Value);*/
+                        profiles.Add(profile);
+                    }
                 }
-                AppCachesCollection.ConfigurationCache.Set("allProfiles", allProfiles);
+                AppCachesCollection.ConfigurationCache.Set("allProfiles", profiles);
             }
-            else
+            else 
             {
                 List<string> bannedProfiles = new List<string>();
                 foreach (string profile in projectProfiles)
@@ -39,7 +46,10 @@ namespace ODDating.Configs
                     if (!lisaProfiles.Exists(x => x.Equals(projectProfile)))
                     {
                         File.Delete(profile);
-                        bannedProfiles.Add(Regex.Match(profile, @"(?<=Profiles\\).*").Value);
+                        if (IsProfileExistInDb(profile))
+                        {
+                            bannedProfiles.Add(profile);
+                        }
                     }
                     AppCachesCollection.ConfigurationCache.Set("bannedProfiles", bannedProfiles);
                 }
@@ -50,7 +60,10 @@ namespace ODDating.Configs
                     if (!File.Exists(newPath))
                     {
                         File.Copy(profile, newPath);
-                        newProfiles.Add(Regex.Match(profile, @"(?<=Profiles\\).*").Value);
+                        if (!IsProfileExistInDb(profile))
+                        {
+                            newProfiles.Add(profile);
+                        }
                     }
                     AppCachesCollection.ConfigurationCache.Set("newProfiles", newProfiles);
                 }
@@ -62,6 +75,13 @@ namespace ODDating.Configs
                     Main.Rows.Add(Regex.Match(profile, @"(?<=Profiles\\).*").Value);
                 }
             }
+        }
+        private static bool IsProfileExistInDb(string profile)
+        {
+            string profileShort = Regex.Match(profile, @"(?<=Profiles\\).*").Value;
+            if (Main.Rows.Find(profileShort) == null)
+                return false;
+            return true;
         }
     }
 }

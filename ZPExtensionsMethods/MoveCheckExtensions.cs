@@ -23,12 +23,12 @@ namespace ZPExtensionsMethods
             localElement = instance.ActiveTab.TryFindElementByXPath(xPath, out result);
             if (result == false)
             {
-                Status.SetValue("Done");
+/*                Status.SetValue("Done");
                 lock (mainWbLocker)
                 {
                     mainWb.Save();
                 }
-                throw new Fatal(message);
+                throw new Fatal(message);*/
             }
             return localElement;
         }
@@ -101,12 +101,12 @@ namespace ZPExtensionsMethods
                 }
                 if (i == 10)
                 {
-                    Status.SetValue("Done");
+/*                    Status.SetValue("Done");
                     lock (mainWbLocker)
                     {
                         mainWb.Save();
                     }
-                    throw new Fatal(message);
+                    throw new Fatal(message);*/
                 }
             }
             return elements;

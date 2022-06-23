@@ -19,11 +19,13 @@ namespace ODDating.ProjectBase
     {
         public bool ON { get; set; }
         public string StartPageUrl { get; set; }
+        public List<string> Xpaths { get; set; }
         public MovesInstance Moves { get; set; }
-        public ActionBase(bool on, string startPageUrl)
+        public ActionBase(bool on, string startPageUrl, List<string> xpaths)
         {
             ON = on;
             StartPageUrl = startPageUrl;
+            Xpaths = xpaths;
         }
         public abstract void RunAction();
     }

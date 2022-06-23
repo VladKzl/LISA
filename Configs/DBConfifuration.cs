@@ -12,6 +12,7 @@ using static ODDating.Program;
 using static ODDating.AppCachesCollection;
 using static ODDating.Variables;
 using LogLevels;
+using static ODDating.Entityes.DBContext;
 
 namespace ODDating.Configs
 {
@@ -26,44 +27,25 @@ namespace ODDating.Configs
                 object newProfiles = null;
                 if (ConfigurationCache.TryGetValue("allProfiles", out allProfiles))
                 {
-                    new Info("Получили все профили, наполняем db...");
                     foreach (string profile in (List<string>)allProfiles)
                     {
-                        var row = Main.Rows.Find(profile);
-                        if (row == null)
-                        {
-                            Main.Rows.Add(profile);
-                        }
+                        Main.Rows.Add(profile, Regex.Match(profile, @"(?<=Profiles\\).*").Value);
                     }
-                    new Info("Закнчили наполнение db");
                 }
                 if (ConfigurationCache.TryGetValue("bannedProfiles", out bannedProfiles))
                 {
-                    new Info("Нашли забаненные профили - удаляем...");
                     foreach (string profile in (List<string>)bannedProfiles)
                     {
-                        var row = Main.Rows.Find(profile);
-                        if(row != null)
-                        {
-                            row.Delete();
-                        }
+                        Main.Rows.Find(Regex.Match(profile, @"(?<=Profiles\\).*").Value).Delete();
                     }
-                    new Info("Забаненные удалены");
                 }
                 if(ConfigurationCache.TryGetValue("newProfiles", out newProfiles))
                 {
-                    new Info("Добавляем новые профили...");
                     foreach (string profile in (List<string>)newProfiles)
                     {
-                        var row = Main.Rows.Find(profile);
-                        if (row == null)
-                        {
-                            Main.Rows.Add(profile);
-                        }
+                        Main.Rows.Add(profile);
                     }
-                    new Info("Добавили новые профили");
                 }
-                Npg.UpdateInner();
             }
             static public void NewDayRefreshColumns()
             {
@@ -76,7 +58,6 @@ namespace ODDating.Configs
                         row["moves_count"] = 0;
                     }
                 }
-                Npg.UpdateInner();
             }
         }
     }

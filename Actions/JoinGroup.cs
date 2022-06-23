@@ -13,13 +13,13 @@ namespace ODDating.Actions
 {
     public class JoinGroup : ActionBase<JoinGroupMoves>
     {
-        public JoinGroup(bool on, string startPageUrl ) : base(on, startPageUrl)
+        public JoinGroup(bool on, string startPageUrl, List<string> xpaths ) : base(on, startPageUrl, xpaths)
         {
             Moves = new JoinGroupMoves(StartPageUrl);
         }
         public override void RunAction()
         {
-            
+            Moves.Move1_GoToMyGroups(Xpaths[0]);
         }
     }
 }

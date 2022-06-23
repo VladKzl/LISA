@@ -25,14 +25,21 @@ namespace ODDating
     {
         public AppConfiguration(Instance inst, IZennoPosterProjectModel proj)
         {
+            ZPBaseConfiguration(inst, proj);
             ConfigurateVariables(inst, proj);
             ConfigurateProgram(inst, proj);
             ConfigurateAppCahcesCollection();
             ConfigurateHost();
             ConfigurateDB();
         }
+        public void ZPBaseConfiguration(Instance inst, IZennoPosterProjectModel proj)
+        {
+            project = proj;
+            instance = inst;
+        }
         public void ConfigurateVariables(Instance inst, IZennoPosterProjectModel proj)
         {
+            new Variables();
             #region [Main]
             //Общие настройки
             Variables.amountMoves = Convert.ToInt32( new[] { Convert.ToInt32(proj.Variables["amountMovesTo"].Value), 
@@ -57,28 +64,27 @@ namespace ODDating
             Variables.groupsToJoinTo = Convert.ToInt32(proj.Variables["groupsToJoinTo"].Value); // Вступить в группы до
             #endregion
             #region [Глобальные переменные]
-            Variables.localWarnAndInfoLogPath = proj.GlobalVariables["LogLevels","localWarnAndInfoLogPath"].Value;
-            Variables.localTraceAndDebugLogPath = proj.GlobalVariables["LogLevels","localTraceAndDebugLogPath"].Value;
-            Variables.localFatalAndErrorLogPath = proj.GlobalVariables["LogLevels","localFatalAndErrorLogPath"].Value;
-            Variables.generalWarnAndInfoLogPath = proj.GlobalVariables["LogLevels","generalWarnAndInfoLogPath"].Value; 
-            Variables.generalTraceAndDebugLogPath = proj.GlobalVariables["LogLevels","generalTraceAndDebugLogPath"].Value;
+            Variables.localWarnAndInfoLogPath = proj.GlobalVariables["LogLevels", "localWarnAndInfoLogPath"].Value;
+            Variables.localTraceAndDebugLogPath = proj.GlobalVariables["LogLevels", "localTraceAndDebugLogPath"].Value;
+            Variables.localFatalAndErrorLogPath = proj.GlobalVariables["LogLevels", "localFatalAndErrorLogPath"].Value;
+            Variables.generalWarnAndInfoLogPath = proj.GlobalVariables["LogLevels", "generalWarnAndInfoLogPath"].Value;
+            Variables.generalTraceAndDebugLogPath = proj.GlobalVariables["LogLevels", "generalTraceAndDebugLogPath"].Value;
             Variables.generalFatalAndErrorLogPath = proj.GlobalVariables["LogLevels", "generalFatalAndErrorLogPath"].Value;
             #endregion
             #region [URLs начальных страниц действий]
             Variables.groupsToJoinTo = Convert.ToInt32(proj.Variables["groupsToJoinTo"].Value); // Вступить в группы до
             #endregion
         }
+
         public void ConfigurateProgram(Instance inst, IZennoPosterProjectModel proj)
-        {
-            ConfigurateNpg();
-            instance = inst;
-            project = proj;
-        }
-        public void ConfigurateNpg()
         {
             Program.Npg = new Npg(Variables.connectionStringOddating, "select * from main; select * from groups", true, DBContext.DataSet);
             DBContext.Main = DBContext.DataSet.Tables["main"];
             DBContext.Groups = DBContext.DataSet.Tables["groups"];
+        }
+        public void ConfigurateNpg()
+        {
+
         }
         public void ConfigurateAppCahcesCollection()
         {
@@ -93,6 +99,7 @@ namespace ODDating
         {
             DBConfifuration.OddatingMain.RefreshProfileColumn();
             DBConfifuration.OddatingMain.NewDayRefreshColumns();
+            Program.Npg.UpdateOuter();
         }
     }
 }

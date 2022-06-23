@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ZennoLab.CommandCenter;
 using ZennoLab.InterfacesLibrary.ProjectModel;
 using static ODDating.Variables;
-using ZPBase;
+using  static ZPBase.Base;
 using LISA;
 using ZPExtensionsMethods;
 

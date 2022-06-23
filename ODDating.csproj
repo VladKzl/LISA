@@ -72,6 +72,9 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.6.0.0\lib\net461\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.7.15\lib\net45\NLog.dll</HintPath>
     </Reference>
@@ -128,6 +131,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml" />
+    <Reference Include="Z.Expressions.Eval, Version=4.0.85.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.Expressions.Eval.4.0.85\lib\net45\Z.Expressions.Eval.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(ZennoPosterDllPath)' != ''">
     <Reference Include="Global, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -157,7 +163,6 @@
     <Compile Include="ProjectBase\MoveBase.cs" />
     <Compile Include="Actions\Moves\JoinGroupMoves.cs" />
     <Compile Include="Entityes\DBContext.cs" />
-    <Compile Include="ZPBase\IZPBase.cs" />
     <Compile Include="ZPBase\ZPBase.cs" />
     <Compile Include="ZPExtensionsMethods\MoveCheckExtensions.cs" />
     <Compile Include="AppConfiguration.cs" />

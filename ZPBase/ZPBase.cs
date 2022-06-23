@@ -9,7 +9,7 @@ using MyNpg;
 
 namespace ZPBase
 {
-    public class Base
+    public static class Base
     {
         [ThreadStatic]
         public static Instance instance;

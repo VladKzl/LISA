@@ -23,9 +23,10 @@ using ODDating.Interfaces;
 using ZPBase;
 using LISA;
 
+
 namespace ODDating
 {
-    public class Program : Base, IZennoExternalCode
+    public class Program : IZennoExternalCode
     {
         public static Npg Npg { get; set; }
         public int Execute(Instance instance, IZennoPosterProjectModel project) // main

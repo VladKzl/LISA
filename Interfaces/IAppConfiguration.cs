@@ -10,6 +10,7 @@ namespace ODDating.Interfaces
 {
     interface IAppConfiguration
     {
+        void ZPBaseConfiguration(Instance instance, IZennoPosterProjectModel proj);
         void ConfigurateVariables(Instance instance, IZennoPosterProjectModel proj);
         void ConfigurateNpg();
         void ConfigurateProgram(Instance instance, IZennoPosterProjectModel proj);
