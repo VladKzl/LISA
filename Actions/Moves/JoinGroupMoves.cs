@@ -17,11 +17,10 @@ namespace ODDating.Actions.Moves
         public JoinGroupMoves(string startPageUrl) : base(startPageUrl)
         {
         }
-        public void Move1_GoToMyGroups(params string[] xpaths)
+        public void Move0_GoToMyGroups(params string[] xpaths)
         {
-            string groupsButton = MovesXpaths[""][0];
             string exeptionMessage = $"Кнопка группы Move1_groupsButtonXpath не найдена, требуется проверка вручную";
-            HtmlElement element = IsElementDownload(groupsButton, exeptionMessage);
+            HtmlElement element = IsElementDownload(xpaths[0], exeptionMessage);
             element.ClickAndWait();
         }
     }

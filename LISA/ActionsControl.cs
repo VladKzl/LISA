@@ -43,7 +43,7 @@ namespace LISA
             Type type = RegisteredActions[new Random().Next(0, RegisteredActions.Count())];
             try
             {
-                IAction action = (IAction)Activator.CreateInstance(type, groupsOn, ActionsStartUrls[type.Name], MovesXpaths[type.Name]);
+                IAction action = (IAction)Activator.CreateInstance(type, ActionsStartUrls[type.Name], MovesXpaths[type.Name]);
                 action.RunAction();
             }
             catch
@@ -56,8 +56,8 @@ namespace LISA
         {
             try
             {
-                RegisteredActions = (Type[])Assembly.GetExecutingAssembly().GetTypes().Where(type =>
-                type.Namespace == "ODDating.Actions");
+                RegisteredActions = Assembly.GetExecutingAssembly().GetTypes().Where(type =>
+                type.Namespace == "ODDating.Actions").ToList();
             }
             catch 
             { 

@@ -22,6 +22,7 @@ namespace ODDating.Configs
             List<string> lisaProfiles = new List<string>(Directory.GetFiles(lisaProfilesPath));
             List<string> projectProfiles = new List<string>(Directory.GetFiles(ODDatingProfilesPath));
 
+
             if (projectProfiles.Count == 0)
             {
                 List<string> profiles = new List<string>();
@@ -31,7 +32,6 @@ namespace ODDating.Configs
                     File.Copy(profile, Path.Combine(ODDatingProfilesPath, Regex.Match(profile, @"(?<=Profiles\\).*").Value));
                     if (IsProfileExistInDb(profile))
                     {
-                        /*profiles.Add(Regex.Match(profile, @"(?<=Profiles\\).*").Value);*/
                         profiles.Add(profile);
                     }
                 }
@@ -70,9 +70,10 @@ namespace ODDating.Configs
             }
             if (Main.Rows.Count == 0)
             {
-                foreach(string profile in projectProfiles)
+                foreach (string profile in projectProfiles)
                 {
-                    Main.Rows.Add(Regex.Match(profile, @"(?<=Profiles\\).*").Value);
+                    Main.Rows.Add(Regex.Match(profile, @"(?<=Profiles\\).*").Value, profile);
+                    Npg.UpdateOuter();
                 }
             }
         }

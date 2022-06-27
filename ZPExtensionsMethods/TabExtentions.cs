@@ -37,22 +37,16 @@ namespace ZPExtensionsMethods
         {
             Tab tab = tabs[tabNum];
             tab.Navigate(url, refferer);
-/*            instance.ActiveTab.WaitDownloading();*/
+            tab.CheckTab();
         }
         public static void TryTabNavigate(this Tab tab, string url, string refferer = "")
         {
-            tab.WaitDownloading();
-            if (tab.IsVoid || tab.IsNull)
-            {
-                string exceptionMessage = "Таб не активировался";
-                throw new Fatal(exceptionMessage);
-            }
+            tab.CheckTab();
             tab.Navigate(url, refferer);
-/*            instance.ActiveTab.WaitDownloading();*/
         }
         public static HtmlElement TryFindElementByXPath(this Tab tab, string xpath, out bool result, int numberOfMatch = 0)
         {
-            instance.ActiveTab.WaitDownloading();
+            tab.CheckTab();
             HtmlElement element = null;
             result = false;
             int i;
@@ -80,17 +74,8 @@ namespace ZPExtensionsMethods
         }
         public static void KeyEventEx(this Tab tab, string key, string keyEvent, string keyModifer)
         {
-            tab.WaitDownloading();
-/*            instance.ActiveTab.WaitDownloading();*/
             tab.KeyEvent(key, keyEvent, keyModifer);
-            if (tab.IsVoid || tab.IsNull)
-            {
-                string exceptionMessage = "Таб не активировался или он неактивен";
-                project.SendErrorToLog(exceptionMessage);
-                throw new Exception(exceptionMessage);
-            }
-/*            tab.WaitDownloading();*/
-/*            instance.ActiveTab.WaitDownloading();*/
+            tab.CheckTab();
         }
     }
 }

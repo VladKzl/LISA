@@ -9,10 +9,11 @@ namespace LISA.Interfaces
 {
     interface ICommon : IZPSettings
     {
-        string Account { get; set; }
+        string AccountPath { get; set; }
+        string AccountName { get; set; }
         DataRow AccountRow { get; set; }
         int AccountRowNumber { get; set; }
-        Type[] RegisteredActions { get; set; }
+        List<Type> RegisteredActions { get; set; }
         int StartTimeTotalMinutes { get; }
     }
 }

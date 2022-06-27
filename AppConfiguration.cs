@@ -27,8 +27,8 @@ namespace ODDating
         {
             ZPBaseConfiguration(inst, proj);
             ConfigurateVariables(inst, proj);
-            ConfigurateProgram(inst, proj);
             ConfigurateAppCahcesCollection();
+            ConfigurateProgram(inst, proj);
             ConfigurateHost();
             ConfigurateDB();
         }
@@ -75,7 +75,21 @@ namespace ODDating
             Variables.groupsToJoinTo = Convert.ToInt32(proj.Variables["groupsToJoinTo"].Value); // Вступить в группы до
             #endregion
         }
-
+        public void ConfigurateAppCahcesCollection()
+        {
+            AppCachesCollection.ConfigurationCache = new MemoryCache(new MemoryCacheOptions());
+            AppCachesCollection.ConfigurationCache = new MemoryCache(new MemoryCacheOptions());
+        }
+        public void ConfigurateHost()
+        {
+            HostConfiguration.FillProjectProfilesDirectory();
+        }
+        public void ConfigurateDB()
+        {
+            DBConfifuration.OddatingMain.RefreshProfileColumn();
+            DBConfifuration.OddatingMain.NewDayRefreshColumns();
+            Program.Npg.UpdateOuter();
+        }
         public void ConfigurateProgram(Instance inst, IZennoPosterProjectModel proj)
         {
             Program.Npg = new Npg(Variables.connectionStringOddating, "select * from main; select * from groups", true, DBContext.DataSet);
@@ -85,21 +99,6 @@ namespace ODDating
         public void ConfigurateNpg()
         {
 
-        }
-        public void ConfigurateAppCahcesCollection()
-        {
-            AppCachesCollection.ConfigurationCache = new MemoryCache(new MemoryCacheOptions());
-            AppCachesCollection.ConfigurationCache = new MemoryCache(new MemoryCacheOptions());
-        }
-        public void ConfigurateHost()  
-        {
-            HostConfiguration.FillProjectProfilesDirectory();
-        }
-        public void ConfigurateDB()
-        {
-            DBConfifuration.OddatingMain.RefreshProfileColumn();
-            DBConfifuration.OddatingMain.NewDayRefreshColumns();
-            Program.Npg.UpdateOuter();
         }
     }
 }

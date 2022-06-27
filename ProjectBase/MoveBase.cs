@@ -17,14 +17,14 @@ namespace ODDating.ProjectBase
     {
         public MoveBase(string startPageUrl)
         {
-            Move0_BrovseStartPage(startPageUrl);
+            BrowseStartPage(startPageUrl);
         }
-        public void Move0_BrovseStartPage(string startPageUrl)
+        public void BrowseStartPage(string startPageUrl)
         {
             instance.ClearCache();
             instance.ClearCookie();
-            project.Profile.Load(Account);
-            instance.AllTabs.TryTabsNavigate(0, "yandex.ru");// костыль яндекс
+            project.Profile.Load(AccountPath);
+            /*instance.AllTabs.TryTabsNavigate(0, "yandex.ru");// костыль яндекс*/
             instance.AllTabs.TryTabsNavigate(0, startPageUrl, "yandex.ru");
             MoveCheckExtensions.CheckChangePassword();
         }

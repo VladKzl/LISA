@@ -29,7 +29,7 @@ namespace ODDating.Configs
                 {
                     foreach (string profile in (List<string>)allProfiles)
                     {
-                        Main.Rows.Add(profile, Regex.Match(profile, @"(?<=Profiles\\).*").Value);
+                        Main.Rows.Add(Regex.Match(profile, @"(?<=Profiles\\).*").Value, profile);
                     }
                 }
                 if (ConfigurationCache.TryGetValue("bannedProfiles", out bannedProfiles))
@@ -43,9 +43,10 @@ namespace ODDating.Configs
                 {
                     foreach (string profile in (List<string>)newProfiles)
                     {
-                        Main.Rows.Add(profile);
+                        Main.Rows.Add(Regex.Match(profile, @"(?<=Profiles\\).*").Value, profile);
                     }
                 }
+                Npg.UpdateOuter();
             }
             static public void NewDayRefreshColumns()
             {
@@ -58,6 +59,7 @@ namespace ODDating.Configs
                         row["moves_count"] = 0;
                     }
                 }
+                Npg.UpdateOuter();
             }
         }
     }

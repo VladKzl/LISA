@@ -21,9 +21,8 @@ namespace ODDating.ProjectBase
         public string StartPageUrl { get; set; }
         public List<string> Xpaths { get; set; }
         public MovesInstance Moves { get; set; }
-        public ActionBase(bool on, string startPageUrl, List<string> xpaths)
+        public ActionBase(string startPageUrl, List<string> xpaths)
         {
-            ON = on;
             StartPageUrl = startPageUrl;
             Xpaths = xpaths;
         }

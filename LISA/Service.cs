@@ -15,6 +15,7 @@ using static ZPBase.Base;
 using ODDating.Entityes;
 using ODDating.ProjectBase;
 using static ODDating.Entityes.DBContext;
+using System.Text.RegularExpressions;
 
 namespace LISA
 {
@@ -24,8 +25,10 @@ namespace LISA
         {
             lock (lockerDb)
             {
-                Account = GetAccountName();
-                AccountRow = Main.Select().Where(row => (string)row["profile"] == Account).First();
+                AccountPath = GetAccountPath();
+                AccountName = Regex.Match(AccountPath, @"(?<=Profiles\\).*").Value;
+                AccountRow = Main.Select().Where(row => (string)row["profile"] == AccountName).First();
+
                 AccountRow["status"] = nameof(AccountStatus.Work);
                 Npg.UpdateOuter();
             }
@@ -35,7 +38,7 @@ namespace LISA
             lock (lockerDb)
             {
                 AccountRow["moves_count"] = +1;
-                if (StartTimeTotalMinutes < SessionDuration) // Session duration check
+                if (StartTimeTotalMinutes.Value < SessionDuration) // Session duration check
                 {
                     if ((int)AccountRow["moves_count"] < AmountMoves) // Day limit muves check
                     {
@@ -49,20 +52,23 @@ namespace LISA
             }
             return false; // Session Over!
         }
-        private string GetAccountName()
+        private string GetAccountPath()
         {
             List<DataRow> readyAccs = GetReadyAccs();
 
-            string accountName = null;
+            string accountPath = null;
             List<DataRow> groupedBySessionsCount = null;
             int i = 0;
-            while (accountName == null)
+            while (accountPath == null)
             {
                 try
                 {
                     groupedBySessionsCount = readyAccs.Where(row =>
                     Convert.ToInt32(row["sessions_count"]) == i &&
                     (DateTime.Now - (DateTime)row["session_ending"]).TotalMinutes >= sessionPause).ToList();
+
+                    int number = new Random().Next(0, groupedBySessionsCount.Count());
+                    accountPath = groupedBySessionsCount.ElementAt(number)["path"].ToString();
                 }
                 catch (ArgumentNullException)
                 {
@@ -70,8 +76,7 @@ namespace LISA
                     continue;
                 }
             }
-            int number = new Random().Next(0, readyAccs.Count());
-            return accountName = groupedBySessionsCount.ElementAt(number)["profile"].ToString();
+            return accountPath;
         }
         private List<DataRow> GetReadyAccs()
         {
