@@ -12,6 +12,7 @@ using ODDating;
 using static ODDating.Program;
 using static ODDating.Variables;
 using static ODDating.Entityes.DBContext;
+using static ODDating.Entityes.DBContext;
 
 namespace ODDating.Configs
 {
@@ -30,7 +31,7 @@ namespace ODDating.Configs
                 foreach (string profile in lisaProfiles)
                 {
                     File.Copy(profile, Path.Combine(ODDatingProfilesPath, Regex.Match(profile, @"(?<=Profiles\\).*").Value));
-                    if (IsProfileExistInDb(profile))
+                    if (!IsProfileExistInDb(profile))
                     {
                         profiles.Add(profile);
                     }

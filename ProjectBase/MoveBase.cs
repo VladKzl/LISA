@@ -15,8 +15,10 @@ namespace ODDating.ProjectBase
 {
     public abstract class MoveBase : Common
     {
-        public MoveBase(string startPageUrl)
+        public List<string> xPaths { get; set; }
+        public MoveBase(string startPageUrl, List<string> xPaths)
         {
+            this.xPaths = xPaths;
             BrowseStartPage(startPageUrl);
         }
         public void BrowseStartPage(string startPageUrl)

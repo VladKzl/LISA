@@ -12,7 +12,6 @@ namespace ODDating.Interfaces
     interface IAction
     {
         bool ON { get; set; }
-        string StartPageUrl { get; set; }
         void RunAction();
     }
 }

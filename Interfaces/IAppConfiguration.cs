@@ -12,10 +12,10 @@ namespace ODDating.Interfaces
     {
         void ZPBaseConfiguration(Instance instance, IZennoPosterProjectModel proj);
         void ConfigurateVariables(Instance instance, IZennoPosterProjectModel proj);
-        void ConfigurateNpg();
         void ConfigurateProgram(Instance instance, IZennoPosterProjectModel proj);
         void ConfigurateAppCahcesCollection();
         void ConfigurateHost();
         void ConfigurateDB();
+        void ConfigurateDBHelpers();
     }
 }

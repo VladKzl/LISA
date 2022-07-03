@@ -18,14 +18,7 @@ namespace ODDating.ProjectBase
     public abstract class ActionBase<MovesInstance> : Common, IAction
     {
         public bool ON { get; set; }
-        public string StartPageUrl { get; set; }
-        public List<string> Xpaths { get; set; }
         public MovesInstance Moves { get; set; }
-        public ActionBase(string startPageUrl, List<string> xpaths)
-        {
-            StartPageUrl = startPageUrl;
-            Xpaths = xpaths;
-        }
         public abstract void RunAction();
     }
 }

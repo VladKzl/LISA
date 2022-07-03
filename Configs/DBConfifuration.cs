@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Data;
 using Npgsql;
 using static ODDating.Program;
 using static ODDating.AppCachesCollection;
@@ -20,7 +19,7 @@ namespace ODDating.Configs
     {
         public class OddatingMain
         {
-            static public void RefreshProfileColumn()
+            public static void RefreshProfileColumn()
             {
                 object allProfiles = null;
                 object bannedProfiles = null;
@@ -48,11 +47,11 @@ namespace ODDating.Configs
                 }
                 Npg.UpdateOuter();
             }
-            static public void NewDayRefreshColumns()
+            public static void UpdateIfNewDayBegins()
             {
-                foreach (DataRow row in Main.Rows)
+                foreach (System.Data.DataRow row in Main.Rows)
                 {
-                    if(DateTime.Today.Day != ((DateTime)row["session_ending"]).Day)
+                    if (DateTime.Today.Day != ((DateTime)row["session_ending"]).Day)
                     {
                         row["session_ending"] = DateTime.Now;
                         row["sessions_count"] = 0;

@@ -158,6 +158,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBHelpers\HelperGroups.cs" />
     <Compile Include="LISA\Common.cs" />
     <Compile Include="LISA\Service.cs" />
     <Compile Include="ProjectBase\MoveBase.cs" />

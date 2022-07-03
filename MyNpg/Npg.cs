@@ -57,13 +57,14 @@ namespace MyNpg
             Adapter.MissingSchemaAction = MissingSchemaAction.AddWithKey;
             Adapter.TableMappings.Add("Table", "main");
             Adapter.TableMappings.Add("Table1", "groups");
+            Adapter.TableMappings.Add("Table2", "groups_statistics");
         }
         private void FillDataSet(DataSet outerDataSet = null)
         {
             if (outerDataSet != null)
             {
-                Adapter.FillSchema(outerDataSet, SchemaType.Mapped);
-                Adapter.Fill(outerDataSet);
+                Adapter.FillSchema(OuterDataSet, SchemaType.Mapped);
+                Adapter.Fill(OuterDataSet);
                 ConfigurateDataSet();
             }
             else

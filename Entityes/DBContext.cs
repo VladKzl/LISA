@@ -12,5 +12,8 @@ namespace ODDating.Entityes
         public static DataSet DataSet { get; set; } = new DataSet();
         public static DataTable Main { get; set; } = new DataTable();
         public static DataTable Groups { get; set; } = new DataTable();
+        public static DataTable GroupsStatistics { get; set; } = new DataTable();
+        
+
     } 
 }

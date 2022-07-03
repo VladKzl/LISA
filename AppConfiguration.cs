@@ -18,67 +18,45 @@ using ODDating.Configs;
 using Microsoft.Extensions.Caching.Memory;
 using ODDating.Interfaces;
 using ODDating.Entityes;
+using ODDating.DBHelpers;
 
 namespace ODDating
 {
     public class AppConfiguration : IAppConfiguration
     {
-        public AppConfiguration(Instance inst, IZennoPosterProjectModel proj)
+        public AppConfiguration(Instance instance, IZennoPosterProjectModel project)
         {
-            ZPBaseConfiguration(inst, proj);
-            ConfigurateVariables(inst, proj);
+            ZPBaseConfiguration(instance, project);
+            ConfigurateVariables(instance, project);
+            ConfigurateProgram(instance, project);
             ConfigurateAppCahcesCollection();
-            ConfigurateProgram(inst, proj);
             ConfigurateHost();
             ConfigurateDB();
+            ConfigurateDBHelpers();
         }
-        public void ZPBaseConfiguration(Instance inst, IZennoPosterProjectModel proj)
+        public void ZPBaseConfiguration(Instance _instance, IZennoPosterProjectModel _project)
         {
-            project = proj;
-            instance = inst;
+            project = _project;
+            instance = _instance;
         }
-        public void ConfigurateVariables(Instance inst, IZennoPosterProjectModel proj)
+        public void ConfigurateVariables(Instance instance, IZennoPosterProjectModel project)
         {
-            new Variables();
-            #region [Main]
-            //Общие настройки
-            Variables.amountMoves = Convert.ToInt32( new[] { Convert.ToInt32(proj.Variables["amountMovesTo"].Value), 
-                                    Convert.ToInt32(proj.Variables["amountMovesFrom"].Value)}.Average()); // Всего действий
-            Variables.movePause = Convert.ToInt32(new[] { Convert.ToInt32(proj.Variables["movePauseFrom"].Value),
-                                    Convert.ToInt32(proj.Variables["movePauseTo"].Value)}.Average()); // Пауза между действиями
-            Variables.sessionPause = Convert.ToInt32(new[] { Convert.ToInt32(proj.Variables["sessionPauseFrom"].Value),
-                                    Convert.ToInt32(proj.Variables["sessionPauseTo"].Value)}.Average()); // Новая сессия через
-            Variables.sessionDuaration = Convert.ToInt32(new[] { Convert.ToInt32(proj.Variables["sessionDurationFrom"].Value),
-                                    Convert.ToInt32(proj.Variables["sessionDurationTo"].Value)}.Average()); // Новая сессия через
-            Variables.DEBUGGING = Convert.ToBoolean(proj.Variables["DEBUGGING"].Value);
-            //DB
-            Variables.connectionStringOddating = proj.Variables["connectionStringOddating"].Value; // Строка подключения к базе данных oddating
-            //Директории
-            Variables.lisaProfilesPath = proj.Variables["lisaProfilesPath"].Value; //Аккаунты LISA OD
-            Variables.ODDatingProfilesPath = proj.Variables["ODDatingProfilesPath"].Value; // Аккаунты проекта
-            #endregion
-            #region [Вступление в группы]
-            //Общие настройки
-            Variables.groupsOn = Convert.ToBoolean(proj.Variables["groupsOn"].Value); //Вкл-Выкл 
-            Variables.groupsToJoinFrom = Convert.ToInt32(proj.Variables["groupsToJoinFrom"].Value); // Вступить в группы от
-            Variables.groupsToJoinTo = Convert.ToInt32(proj.Variables["groupsToJoinTo"].Value); // Вступить в группы до
-            #endregion
-            #region [Глобальные переменные]
-            Variables.localWarnAndInfoLogPath = proj.GlobalVariables["LogLevels", "localWarnAndInfoLogPath"].Value;
-            Variables.localTraceAndDebugLogPath = proj.GlobalVariables["LogLevels", "localTraceAndDebugLogPath"].Value;
-            Variables.localFatalAndErrorLogPath = proj.GlobalVariables["LogLevels", "localFatalAndErrorLogPath"].Value;
-            Variables.generalWarnAndInfoLogPath = proj.GlobalVariables["LogLevels", "generalWarnAndInfoLogPath"].Value;
-            Variables.generalTraceAndDebugLogPath = proj.GlobalVariables["LogLevels", "generalTraceAndDebugLogPath"].Value;
-            Variables.generalFatalAndErrorLogPath = proj.GlobalVariables["LogLevels", "generalFatalAndErrorLogPath"].Value;
-            #endregion
-            #region [URLs начальных страниц действий]
-            Variables.groupsToJoinTo = Convert.ToInt32(proj.Variables["groupsToJoinTo"].Value); // Вступить в группы до
-            #endregion
+            new Variables(instance, project);
         }
         public void ConfigurateAppCahcesCollection()
         {
             AppCachesCollection.ConfigurationCache = new MemoryCache(new MemoryCacheOptions());
             AppCachesCollection.ConfigurationCache = new MemoryCache(new MemoryCacheOptions());
+        }
+        public void ConfigurateProgram(Instance instance, IZennoPosterProjectModel project)
+        {
+            Program.Npg = new Npg(Variables.connectionStringOddating,
+                "select * from main;" +
+                "select * from groups;" +
+                "select * from groups_statistics;", true, DBContext.DataSet);
+            DBContext.Main = DBContext.DataSet.Tables["main"];
+            DBContext.Groups = DBContext.DataSet.Tables["groups"];
+            DBContext.GroupsStatistics = DBContext.DataSet.Tables["groups_statistics"];
         }
         public void ConfigurateHost()
         {
@@ -87,18 +65,11 @@ namespace ODDating
         public void ConfigurateDB()
         {
             DBConfifuration.OddatingMain.RefreshProfileColumn();
-            DBConfifuration.OddatingMain.NewDayRefreshColumns();
             Program.Npg.UpdateOuter();
         }
-        public void ConfigurateProgram(Instance inst, IZennoPosterProjectModel proj)
+        public void ConfigurateDBHelpers()
         {
-            Program.Npg = new Npg(Variables.connectionStringOddating, "select * from main; select * from groups", true, DBContext.DataSet);
-            DBContext.Main = DBContext.DataSet.Tables["main"];
-            DBContext.Groups = DBContext.DataSet.Tables["groups"];
-        }
-        public void ConfigurateNpg()
-        {
-
+            new HelperGroups();
         }
     }
 }

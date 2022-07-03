@@ -22,7 +22,11 @@ using LogLevels;
 using ODDating.Interfaces;
 using ZPBase;
 using LISA;
-
+using ODDating.Entityes;
+using static ZPExtensionsMethods.HtmlEllementExtentions;
+using static ZPExtensionsMethods.MoveCheckExtensions;
+using static ZPExtensionsMethods.MoveCheckExtensions;
+using ODDating.DBHelpers;
 
 namespace ODDating
 {
@@ -34,6 +38,9 @@ namespace ODDating
             try
             {
                 StartAppConfiguration(instance, project);
+
+                HelperGroups.AddToUsedGroups();
+
                 ActionsControl LISA = new ActionsControl();
                 LISA.StartActions();
             }
@@ -53,6 +60,7 @@ namespace ODDating
                     configurateAppOneTime = false;
                 }
             }
+            DBConfifuration.OddatingMain.UpdateIfNewDayBegins();
         }
     }
 }

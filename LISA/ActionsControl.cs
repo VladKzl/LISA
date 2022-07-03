@@ -46,7 +46,7 @@ namespace LISA
                 IAction action = (IAction)Activator.CreateInstance(type, ActionsStartUrls[type.Name], MovesXpaths[type.Name]);
                 action.RunAction();
             }
-            catch
+            catch(Exception ex)
             {
                 throw new Fatal("Начального url не найдено. " +
                     "Проверьте названия ваших действий, они должны совпадать с названиями начальных url.");

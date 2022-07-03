@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogLevels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace ZPExtensionsMethods
         }
         public static HtmlElement IsElementDownload(string xPath, string message)
         {
-            instance.ActiveTab.WaitDownloading();
+            CheckTab();
             HtmlElement localElement = null;
             bool result;
             localElement = instance.ActiveTab.TryFindElementByXPath(xPath, out result);
@@ -39,7 +40,7 @@ namespace ZPExtensionsMethods
         }
         public static Dictionary<string, HtmlElement> AreElementsDownload(string xPath1, WaitDownload choose, string message, string xPath2 = null, string xPath3 = null)
         {
-            instance.ActiveTab.WaitDownloading();
+            CheckTab();
             Dictionary<string, HtmlElement> elements = new Dictionary<string, HtmlElement>();
             int i;
             for (i = 0; i != 10; i++)
@@ -110,6 +111,15 @@ namespace ZPExtensionsMethods
                 }
             }
             return elements;
+        }
+        private static void CheckTab()
+        {
+            Tab tab = instance.ActiveTab;
+            if (tab.IsVoid || tab.IsNull)
+            {
+                string exceptionMessage = "Таб не активировался";
+                throw new Fatal(exceptionMessage);
+            }
         }
     }
 }
