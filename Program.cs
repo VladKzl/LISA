@@ -38,9 +38,6 @@ namespace ODDating
             try
             {
                 StartAppConfiguration(instance, project);
-
-                HelperGroups.AddToUsedGroups();
-
                 ActionsControl LISA = new ActionsControl();
                 LISA.StartActions();
             }
